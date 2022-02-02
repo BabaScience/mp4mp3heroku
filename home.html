@@ -8,21 +8,43 @@
     <title>Video Audio Converter</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container block">
         </br>
-        <h1 class="text-center">MP4 TO MP3</h1>
-        <form action="/convert" method='post' enctype="multipart/form-data">
+        <h3 class="text-center">Youtube Downloader</h1>
+        <form id='form-download' method='post' enctype="multipart/form-data" class="d-grid gap-2">
+            <div class="form-group">
+                <input id='input-download' type="input" class="form-control" name="file" required>
+            </div>
+            <div class="form-group d-grid gap-2">
+                <button id='btn-download' class="btn btn-block btn-danger" >Download Video </button>
+            </div>
+        </form>
+    </div>
+    </br>
+
+    <div class="container">
+        <h3 class="text-center">MP4 To MP3</h1>
+        <form action="/convert" method='post' enctype="multipart/form-data" class="d-grid gap-2">
             <div class="form-group">
                 <input type="file" class="form-control" name="file" required>
             </div>
-            <div class="form-group">
-                <button class="btn btn-block btn-danger">
-                    Convert to MP3
-                </button>
+            <div class="form-group d-grid gap-2">
+                <button id='btn-convert' class="btn btn-block btn-danger" >Convert to MP3 </button>
             </div>
-
         </form>
     </div>
+
+    <script>
+        var downloadButton = document.getElementById('btn-download')
+        var downloadInput = document.getElementById('input-download')
+        var downloadForm = document.getElementById('form-download')
+
+
+        downloadButton.addEventListener('click', (e) => {
+            link = downloadInput.value
+            downloadForm.action = `/download?link=${link}`
+        })
+    </script>
     
 </body>
 </html>

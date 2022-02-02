@@ -3,9 +3,15 @@ const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 const {exec} = require('child_process')
+const ytdl = require('ytdl-core')
+const { format } = require('path')
+
 
 const app = express()
 app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded()); //Parse URL-encoded bodies
+
 const PORT = process.env.PORT || 3000
 
 
@@ -57,6 +63,23 @@ app.post('/convert', upload.single('file'),(req, res) => {
             }
         })
     }
+ 
+})
+
+app.post('/download', async (req, res) => {
+    console.log("request querry", req.query)
+    link = req.query.link
+
+    const info =  await ytdl.getInfo(link);
+
+    info.formats.forEach(format => {
+        if(format.hasAudio && format.hasVideo){
+            console.log(`format: ${format}`)
+            res.redirect(format.url)
+        }
+    })
+    console.log('done!')
+
 })
 
 app.listen(PORT, () => {
