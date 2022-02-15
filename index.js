@@ -66,6 +66,32 @@ app.post('/convert', upload.single('file'),(req, res) => {
  
 })
 
+app.post('/compress', upload.single('file'),(req, res) => {
+    if(req.file){
+        console.log(req.file.path)
+        var output = `compressed-${Date.now()}.mp4`
+
+        var command = `ffmpeg -i "${req.file.path}" -vcodec libx265 -crf 28 "${output}"`
+
+        exec(command, (error, stdout, strerr) => {
+            if(error) {
+                console.log( `error: ${error.message}`)
+            }
+            else {
+                console.log("file is compressed!")
+                res.download(output, err => {
+                    if (err) {
+                        throw err
+                    }
+                    fs.unlinkSync(req.file.path)
+                    fs.unlinkSync(output)
+                })
+            }
+        })
+    }
+ 
+})
+
 app.post('/download', async (req, res) => {
     console.log("request querry", req.query)
     link = req.query.link
