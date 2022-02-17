@@ -53,6 +53,7 @@
 
 
         downloadButton.addEventListener('click', (e) => {
+            console.log('button pressed!')
             link = downloadInput.value
             downloadForm.action = `/download?link=${link}`
         })
